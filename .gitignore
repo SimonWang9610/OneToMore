@@ -12,3 +12,5 @@ Cargo.lock
 
 /vault/
 /upload/
+**/node_modules/
+**/config/
