@@ -27,7 +27,7 @@ module.exports.pool = db.pool;
 
 module.exports.execute = function(options, connection) {
 	if (!options.statement) {
-		throw new Error('Missing query statment');
+		throw new Error('Missing query statement');
 	}
 
 	if (connection) {
