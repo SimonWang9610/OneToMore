@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@apollo/client": "^3.3.21",
+    "graphql": "^15.5.1",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0"
+  }
+}

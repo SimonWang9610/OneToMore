@@ -1,0 +1,27 @@
+{
+    "article1": {
+        "title": "first",
+        "abstract": "abstract",
+        "content": "first",
+        "author": "otm",
+        "createdAt": "create",
+        "modifiedAt": "modify"
+    },
+    "article2": {
+        "title": "second",
+        "abstract": "abstract",
+        "content": "second",
+        "author": "otm",
+        "createdAt": "create",
+        "modifiedAt": "modify"
+    },
+    "article3": {
+        "title": "third",
+        "abstract": "abstract",
+        "content": "third",
+        "author": "otm",
+        "createdAt": "create",
+        "modifiedAt": "modify"
+    }
+
+}
