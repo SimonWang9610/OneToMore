@@ -3,11 +3,10 @@ const config = require('config');
 module.exports = function() {
 	return function(req, res, next) {
 		if (req.query.page) {
-			let offset = config.pagination.perPage;
 			let page = parseInt(req.query.page, 10);
-			let from = (page - 1) * offset;
-			req.query.offset = offset;
-			req.query.from = from;
+			let skip = (page - 1) * config.pagination.perPage;
+			req.query.skip = skip;
+			req.query.limit = config.pagination.perPage;
 
 			next();
 		} else {

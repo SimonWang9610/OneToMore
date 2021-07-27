@@ -1,25 +1,27 @@
 const _ = require('loadsh');
-const Strings = require('../utils/String.js');
-const query = require('../models/query');
+const Strings = require('../../utils/String.js');
+const query = require('../query');
 
-module.exports.getArticles = function(type, from, offset) {
+const getArticles = function(type, from, offset) {
 	let sql = null;
 	let params = null;
 
 	if (type) {
 		sql =
-			'SELECT a.Guid, a.Subject, a.Category, a.IsPrivated, a.CreationDate, ac.CommentsCount, a.ViewsCount FROM t_article a ' +
+			'SELECT a.Guid, a.Subject, a.Category, a.CreatedAt, ac.CommentsCount, al.LikeCount, a.ViewsCounts FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
+			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
 			'WHERE a.Category=? ' +
-			'ORDER BY a.CreationDate DESC LIMIT ?,?';
+			'ORDER BY a.CreatedAt DESC LIMIT ?,?';
 		params = [ type, from, offset ];
 	} else {
 		sql =
-			'SELECT a.Guid, a.Subject, a.IsPrivated, a.CreationDate, ac.CommentsCount, a.ViewsCount FROM t_article a ' +
+			'SELECT a.Guid, a.Subject, a.CreatedAt, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
-			'ORDER BY a.CreationDate DESC LIMIT ?,?';
+			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
+			'ORDER BY a.CreatedAt DESC LIMIT ?,?';
 		params = [ from, offset ];
 	}
 	return query
@@ -36,11 +38,11 @@ module.exports.getArticles = function(type, from, offset) {
 		});
 };
 
-module.exports.getSingleArticle = function(id) {
+const getSingleArticle = function(id) {
 	let sql =
-		'SELECT a.Guid, a.Subject, a.Content, a.Category, a.IsPrivated, a.CreationDate, a.LastEditDate, ac.CommentsCount, a.ViewsCount FROM t_article a ' +
-		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
-		'ON ac.ArticleGuid = a.Guid ' +
+		'SELECT a.Guid, a.Subject, a.Content, a.Category, a.CreatedAt, a.LastModified, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
+		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ON ac.ArticleGuid = a.Guid ' +
+		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
 		'WHERE a.Guid=?';
 	return query
 		.execute({
@@ -59,10 +61,10 @@ module.exports.getSingleArticle = function(id) {
 		});
 };
 
-module.exports.getLatestArticle = function() {
+const getLatestArticle = function() {
 	let sql =
-		'SELECT a.Guid, a.Subject, a.Content, a.CreationDate FROM t_article a ' +
-		'ORDER BY a.CreationDate DESC LIMIT 1';
+		'SELECT a.Guid, a.Subject, a.Content, a.CreatedAt FROM t_article a ' +
+		'ORDER BY a.CreatedAt DESC LIMIT 1';
 	return query
 		.execute({
 			statement: sql
@@ -76,7 +78,7 @@ module.exports.getLatestArticle = function() {
 		});
 };
 
-module.exports.editArticle = function(article) {
+const editArticle = function(article) {
 	var [ columns, params ] = createStatement(article, 'edit');
 
 	columns.push('LastEditDate=?');
@@ -96,10 +98,10 @@ module.exports.editArticle = function(article) {
 		});
 };
 
-module.exports.createArticle = function(article) {
+const createArticle = function(article) {
 	// var [columns, params] = createStatement(article);
 
-	// columns.push('CreationDate=?');
+	// columns.push('CreatedAt=?');
 	// params.push(String.formatDate());
 
 	let params = createParams(article);
@@ -123,7 +125,8 @@ module.exports.createArticle = function(article) {
 		});
 };
 
-module.exports.deleteArticle = function(id) {
+const deleteArticle = function (id) {
+	// TODO: should delete all comments of the article
 	let sql = 'DELETE FROM t_article WHERE Guid=?';
 	return query
 		.execute({
@@ -135,7 +138,7 @@ module.exports.deleteArticle = function(id) {
 		});
 };
 
-module.exports.increaseViewsCount = function(id) {
+const increaseViewsCount = function(id) {
 	let sql = 'UPDATE t_article SET ViewsCount=ViewsCount+1 WHERE Guid=?';
 	return query
 		.execute({
@@ -147,7 +150,7 @@ module.exports.increaseViewsCount = function(id) {
 		});
 };
 
-module.exports.count = function(type) {
+const count = function(type) {
 	let sql = 'SELECT COUNT(*) AS Count FROM t_article';
 
 	if (type) {
@@ -197,7 +200,7 @@ function createParams(article) {
 	params.Content = article.Content;
 	params.IsPrivated = article.IsPrivated;
 	params.Category = article.Category;
-	params.CreationDate = Strings.formatDate();
+	params.CreatedAt = Strings.formatDate();
 
 	return params;
 }
@@ -214,7 +217,7 @@ function createParams(article) {
 // 				Subject: row.Subject,
 // 				Content: row.Content,
 // 				Category: row.Category,
-// 				CreationDate: row.CreationDate,
+// 				CreatedAt: row.CreatedAt,
 // 				IsPrivated: row.IsPrivated,
 // 				ViewsCount: row.ViewsCount,
 // 				CommentsCount: row.CommentsCount
@@ -225,3 +228,14 @@ function createParams(article) {
 // 	});
 // 	return articles;
 // }
+
+module.exports.articleModel = {
+	getArticles,
+	getSingleArticle,
+	getLatestArticle,
+	editArticle,
+	createArticle,
+	deleteArticle,
+	increaseViewsCount,
+	count,
+}

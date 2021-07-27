@@ -65,7 +65,7 @@ const liked = async (id: string, query: Query[] | null) => {
     // TODO require UserGuid
     const request = {
         url: PREFIX_URL,
-        suffix: ["/liked"],
+        suffix: ["/like"],
         type: "application/json",
         params: [id],
         query: query,
@@ -79,7 +79,7 @@ const collected = async (id: string, query: Query[] | null) => {
     
     const request = {
         url: PREFIX_URL,
-        suffix: ["/collected"],
+        suffix: ["/collect"],
         type: "application/json",
         params: [id],
         query: query,

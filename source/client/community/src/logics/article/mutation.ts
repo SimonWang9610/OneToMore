@@ -89,7 +89,7 @@ const likeArticle = async (id: string, query: Query[] | null) => {
 }
 
 const dislikeArticle = async (id: string, query: Query[] | null) => {
-    
+    // /api/v1/article/like/dislike
     const request = {
         url: PREFIX_URL + "/like",
         suffix: null,
@@ -117,6 +117,19 @@ const collectArticle = async (id: string, query: Query[] | null) => {
 
 }
 
+const viewArticle = async (id: string, query: Query[] | null) => {
+    
+    const request = {
+        url: PREFIX_URL + "/view",
+        suffix: null,
+        type: "application/json",
+        params: [id],
+        query: query,
+    };
+
+    return Handlers.postHandler(request, null);
+}
+
 
 export const ArticleMutation = {
     createArticle,
@@ -127,4 +140,5 @@ export const ArticleMutation = {
     likeArticle,
     dislikeArticle,
     collectArticle,
+    viewArticle,
 }

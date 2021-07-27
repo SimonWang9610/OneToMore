@@ -8,7 +8,7 @@ const path = require('path');
 const config = require('config');
 
 // authentication
-const authRouter = require('./router/auth');
+const auth = require("./middleware/authenticate");
 
 // routers related to article
 const articleRouter = require('./router/article');
@@ -20,7 +20,7 @@ const { urlencoded } = require('body-parser');
 // initialize App
 const app = express();
 
-app.use(cors({ allowedHeaders: [ 'apikey' ] }));
+app.use(cors({ allowedHeaders: [ 'Token' ] }));
 app.use(methodOverride());
 
 // parse API requests
@@ -32,6 +32,7 @@ app.use(bodyParser.text());
 const dist = path.resolve(__dirname, 'public');
 app.use(express.static(dist));
 
+app.use(auth);
 //app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/article', articleRouter);
 // app.use('/api/v1/comment', commentRouter);

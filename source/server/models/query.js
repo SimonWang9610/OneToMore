@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const db = require('../models/db');
+const db = require('./db');
 
 function executeQuery(options, connection) {
 

@@ -1,10 +1,10 @@
 const _ = require('loadsh');
-const Strings = require('../utils/String');
-const query = require('../models/query');
+const Strings = require('../../utils/String');
+const query = require('../../models/query');
 
-module.exports.getComments = function(articleGuid) {
-	let sql = 'SELECT c.ID, c.Guid, c.Content, c.CreationDate, c.Author FROM t_comment c '
-			+ 'WHERE c.ArticleGuid=? ORDER BY c.CreationDate';
+const getComments = function(articleGuid) {
+	let sql = 'SELECT c.ID, c.Guid, c.Content, c.CreationAt, c.Author FROM t_comment c '
+			+ 'WHERE c.ArticleGuid=? ORDER BY c.CreationAt';
 	return query.execute({
 		statement: sql,
 		params: [articleGuid]
@@ -17,9 +17,26 @@ module.exports.getComments = function(articleGuid) {
 	});
 };
 
-module.exports.addComment = function(comment) {
+const getComment = (commentGuid) => {
+	let sql = 'SELECT c.Guid, c.Content, c.CreatedAt, c.Author FROM t_comment c '
+		+ 'WHERE c.Guid=?';
+	
+	return query.execute({
+			statement: sql,
+			params: [commentGuid]
+		}).then(rs => {
+			if (_.isEmpty(rs)) {
+				return [];
+			} else {
+				return rs;
+			}
+	});
+	
+}
+
+const addComment = function(comment) {
 	var [columns, params] = createStatement(comment);
-	columns.push('CreationDate=?');
+	columns.push('CreatedAt=?');
 	params.push(Strings.formatDate());
 
 	let sql = 'INSERT INTO t_comment SET ' + columns.join();
@@ -28,7 +45,10 @@ module.exports.addComment = function(comment) {
 		params: params
 	}).then(rs => {
 		if (rs.affectedRows === 1) {
-			return rs.affectedRows;
+			let result = {};
+			result.affectedRows = rs.affectedRows;
+			result.id = comment.Guid;
+			return result;
 		} else {
 			throw new Error(rs.message);
 		}
@@ -36,14 +56,14 @@ module.exports.addComment = function(comment) {
 };
 
 
-module.exports.deleteComment = function(commentGuid) {
+const deleteComment = function(commentGuid) {
 	let sql = 'DELETE FROM t_comment WHERE Guid=?';
 	return qury.execute({
 		statement: sql,
 		params: [commentGuid]
 	}).then(rs => {
 		if (rs.affectedRows === 1) {
-			return affectedRows;
+			return rs.affectedRows;
 		} else {
 			throw new Error(rs.message);
 		}
@@ -62,4 +82,11 @@ function createStatement(comment) {
 	});
 
 	return [columns, params];
+}
+
+module.exports.commentModel = {
+	getComments,
+	getComment,
+	addComment,
+	deleteComment,
 }

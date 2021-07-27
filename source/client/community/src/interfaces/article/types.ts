@@ -31,8 +31,6 @@ export interface Article {
     viewsCount: number,
     commentCount: number,
     likeCount: number,
-    liked: boolean,
-    collected: boolean,
 }
 
 export interface Single {
