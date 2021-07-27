@@ -1,1 +1,0 @@
-// retrieve user static files in a module

@@ -5,32 +5,6 @@ const { uuid } = require('uuidv4');
 const Files = require('../utils/Files');
 
 var utils = {
-	createBanner: function() {
-		let html = [];
-		let src = '/api/v1/banner';
-		let style =
-			"background-image: url('" +
-			src +
-			"'); background-repeat: no-repeat; background-size: cover; background-position: center center;";
-
-		html.push('<div>');
-		html.push('<div id="bannerBg" style="' + style + '">');
-		html.push('</div>');
-		html.push('</div>');
-		return html.join('');
-	},
-
-	createNavbar: async function(landingPage) {
-		let filePath = 'config/templates/navbar.html';
-		let data = await Files.readFile(filePath);
-		return data.toString();
-	},
-
-	createFooter: async function() {
-		let filePath = 'config/templates/footer.html';
-		let data = await Files.readFile(filePath);
-		return data.toString();
-	},
 
 	resp: function(res, success, message, data) {
 		if (data) {

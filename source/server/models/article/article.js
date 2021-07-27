@@ -8,7 +8,7 @@ const getArticles = function(type, from, offset) {
 
 	if (type) {
 		sql =
-			'SELECT a.Guid, a.Subject, a.Category, a.CreatedAt, ac.CommentsCount, al.LikeCount, a.ViewsCounts FROM t_article a ' +
+			'SELECT a.Guid, a.Title, a.Category, a.CreatedAt, ac.CommentsCount, al.LikeCount, a.ViewsCounts FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
@@ -17,7 +17,7 @@ const getArticles = function(type, from, offset) {
 		params = [ type, from, offset ];
 	} else {
 		sql =
-			'SELECT a.Guid, a.Subject, a.CreatedAt, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
+			'SELECT a.Guid, a.Title, a.CreatedAt, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
@@ -40,9 +40,9 @@ const getArticles = function(type, from, offset) {
 
 const getSingleArticle = function(id) {
 	let sql =
-		'SELECT a.Guid, a.Subject, a.Content, a.Category, a.CreatedAt, a.LastModified, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
+		'SELECT a.Guid, a.Subject, a.Content, a.Category, a.CreatedAt, a.LastModified, ac.CommentsCount, al.LikeCounts, al.Liked, a.ViewsCount FROM t_article a ' +
 		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ON ac.ArticleGuid = a.Guid ' +
-		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
+		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid ' +
 		'WHERE a.Guid=?';
 	return query
 		.execute({

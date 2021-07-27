@@ -10,11 +10,11 @@ const config = require('config');
 // authentication
 const auth = require("./middleware/authenticate");
 
+const userRouter = require("./router/user");
+
 // routers related to article
 const articleRouter = require('./router/article');
-const voterRouter = require('./router/voter');
-const commentRouter = require('./router/comment');
-const collectRouter = require('./router/collect');
+
 const { urlencoded } = require('body-parser');
 
 // initialize App
@@ -33,11 +33,9 @@ const dist = path.resolve(__dirname, 'public');
 app.use(express.static(dist));
 
 app.use(auth);
-//app.use('/api/v1/auth', authRouter);
+app.use("/api/v1/uas", userRouter);
 app.use('/api/v1/article', articleRouter);
-// app.use('/api/v1/comment', commentRouter);
-// app.use('/api/v1/voter', voterRouter);
-// app.use('/api/v1/collect', collectRouter);
+
 
 app.get('/api/v1', (req, res, next) => {
     return res.status(200).json({

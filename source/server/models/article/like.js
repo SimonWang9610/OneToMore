@@ -4,7 +4,7 @@ const Strings = require('../../utils/String');
 
 
 const liked = (userGuid, articleGuid) => {
-    let sql = "SELECT ID FROM t_like WHERE ArticleGuid=?, UserGuid=?";
+    let sql = "SELECT COUNT(ID) FROM t_like WHERE ArticleGuid=?, UserGuid=?";
     return query.execute({
         statement: sql,
         params: [articleGuid, userGuid]
@@ -45,6 +45,21 @@ const dislike = (userGuid, articleGuid) => {
             return rs.affectedRows;
         } else {
             throw new Error(rs.message);
+        }
+    })
+}
+
+const getLikes = (articleGuid) => {
+    let sql = "SELECT UserGuid FROM t_like WHERE ArticleGuid=?";
+    
+    return query.execute({
+        statement: sql,
+        params: [articleGuid]
+    }).then(rs => {
+        if (_.isEmpty(rs)) {
+            return [];
+        } else {
+            return rs;
         }
     })
 }

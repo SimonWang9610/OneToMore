@@ -12,8 +12,13 @@ const dislike = (userGuid, articleGuid) => {
     return likeModel.dislike(userGuid, articleGuid);
 }
 
+const getLikes = (articleGuid) => {
+    return likeModel.getLikes(articleGuid);
+}
+
 module.exports.likeLogic = {
     like,
     liked,
     dislike,
+    getLikes,
 }

@@ -3,8 +3,8 @@ const Strings = require('../../utils/String');
 const query = require('../../models/query');
 
 const getComments = function(articleGuid) {
-	let sql = 'SELECT c.ID, c.Guid, c.Content, c.CreationAt, c.Author FROM t_comment c '
-			+ 'WHERE c.ArticleGuid=? ORDER BY c.CreationAt';
+	let sql = 'SELECT c.Guid, c.Content, c.CreationAt, c.Author FROM t_comment c '
+			+ 'WHERE c.ArticleGuid=? ORDER BY c.CreationDate';
 	return query.execute({
 		statement: sql,
 		params: [articleGuid]
