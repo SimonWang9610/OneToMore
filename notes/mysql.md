@@ -1,0 +1,1 @@
+- `cannot add or update a child row a foreign key constraint fails` occurs because the referencing field in the child table has some values that do not exist in the parent table.

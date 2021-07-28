@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { collectLogic } = require("../../logics/article");
+const { collectLogic } = require("../../logics/article/collect");
 const Response = require("../../utils/response");
 
 
@@ -7,7 +7,7 @@ router.get("/", async (req, res, next) => {
     let category = req.query.category;
 
     if (req.token) {
-        let articles = await collectLogic.getCollections(req.username, category);
+        let articles = await collectLogic.getCollections(req.userGuid, category);
         if (articles) {
             return res.status(200).json({
                 data: {
@@ -28,7 +28,7 @@ router.get("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
-        return collectLogic.collected(req.username, articleGuid).then(row => {
+        return collectLogic.collected(req.userGuid, articleGuid).then(row => {
             if (row) {
                 return Response(res, true, "Collected");
             } else {
@@ -45,7 +45,7 @@ router.post("/:articleGuid", async (req, res, next) => {
     let category = req.query.category;
 
     if (req.token) {
-        return collectLogic.collect(req.username, articleGuid, category).then(rowsAffected => {
+        return collectLogic.collect(req.userGuid, articleGuid, category).then(rowsAffected => {
             if (rowsAffected) {
                 return Response(res, true, "Collected");
             } else {
@@ -71,4 +71,6 @@ router.post("/remove/:articleGuid", async (req, res, next) => {
     } else {
         return Response(res, false, "NoIdentity");
     }
-})
+});
+
+module.exports = router;

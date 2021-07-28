@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const userLogic = require("../../logics/user");
+const { userLogic } = require("../../logics/user");
 const Strings = require("../../utils/String");
 const Response = require("../../utils/response");
 const config = require("config");
@@ -50,7 +50,7 @@ router.post("/logout", async (req, res, next) => {
 const createJWT = (user) => {
     let options = {};
 
-    options.expireIn = config.jwt.expireInMinutes;
+    options.expiresIn = config.jwt.expiresInMinutes;
     options.audience = config.jwt.audience;
     options.issuer = config.jwt.issuer;
 

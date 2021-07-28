@@ -1,7 +1,14 @@
-export * from "./article";
-export * from "./comment";
-export * from "./collect";
-export * from "./like";
+const commentModel = require("./comment");
+const collectModel = require("./collect");
+const likeModel = require("./like");
+const articleModel = require("./article");
+
+module.exports = {
+    commentModel,
+    collectModel,
+    likeModel,
+    articleModel,
+}
 
 
 

@@ -1,0 +1,98 @@
+POST http://localhost:8000/api/v1/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "simon2",
+    "email": "simon2@gmail.com",
+    "password": "simon2"
+}
+###
+
+GET http://localhost:8000/api/v1/register/verify?email=simon2@gmail.com HTTP/1.1
+content-type: application/json
+
+{
+"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyMzI1MzY5LTI3RUMtNDdGQi04OUQ1LTg5NzRBMzI0NURCNyIsInVzZXJuYW1lIjoic2ltb24yIiwiaWF0IjoxNjI3NDgxOTY5LCJleHAiOjE2Mjc0OTIwNDksImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.KabXvq52tQVnhlbIfSiYEi9kN50ct9FU6xJ3gbjQsO0",
+}
+###
+
+GET http://localhost:8000/api/v1/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "simon1",
+    "username": "simon1",
+    "password": "simon1"
+}
+###
+
+POST http://localhost:8000/api/v1/article/create HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkI3NDREMkUyLTM0ODItNDU4MC04QTJCLTRDODQ5RDk5Mzc0OCIsInVzZXJuYW1lIjoic2ltb24yIiwiaWF0IjoxNjI3NDg0OTAwLCJleHAiOjE2Mjc0OTQ5ODAsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.E3H2iWeWqvQGA2GqrkvJOycLEReciii9L-Kblv3Nqhw
+
+{
+    "article": {
+        "Title": "simon2 4",
+        "Content": "simon2 4"
+    }
+}
+###
+
+POST http://localhost:8000/api/v1/article/edit/98A4D6C6-76A2-4ADE-B141-FE4DD1D30069 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkI3NDREMkUyLTM0ODItNDU4MC04QTJCLTRDODQ5RDk5Mzc0OCIsInVzZXJuYW1lIjoic2ltb24yIiwiaWF0IjoxNjI3NDg0OTAwLCJleHAiOjE2Mjc0OTQ5ODAsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.E3H2iWeWqvQGA2GqrkvJOycLEReciii9L-Kblv3Nqhw
+
+{
+    "article": {
+        "Title": "simon2 second",
+        "Content": "simon2 second"
+    }
+}
+
+###
+
+GET http://localhost:8000/api/v1/article/E8C869E7-E2DC-4CFC-97D1-D2DE199346D6 HTTP/1.1
+Content-Type: application/json
+
+###
+POST http://localhost:8000/api/v1/article/view/50908FF2-BBEC-43EA-B1C2-C4987C682958 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkI3NDREMkUyLTM0ODItNDU4MC04QTJCLTRDODQ5RDk5Mzc0OCIsInVzZXJuYW1lIjoic2ltb24yIiwiaWF0IjoxNjI3NDg0OTAwLCJleHAiOjE2Mjc0OTQ5ODAsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.E3H2iWeWqvQGA2GqrkvJOycLEReciii9L-Kblv3Nqhw
+
+{
+
+}
+###
+
+POST http://localhost:8000/api/v1/article/collect/50908FF2-BBEC-43EA-B1C2-C4987C682958 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NzY4NDFGLTQxQjgtNDIyRS05NDZGLTJFREVCQjVEQTQ2RSIsInVzZXJuYW1lIjoic2ltb24xIiwiaWF0IjoxNjI3NDg2MDQ5LCJleHAiOjE2Mjc0OTYxMjksImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.btoRYtf8x7RWCEb4x_NAFkCaEaO0R6YZQ-oilI4ljK8
+
+{
+
+}
+###
+GET http://localhost:8000/api/v1/article/collect/ HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NzY4NDFGLTQxQjgtNDIyRS05NDZGLTJFREVCQjVEQTQ2RSIsInVzZXJuYW1lIjoic2ltb24xIiwiaWF0IjoxNjI3NDg4NTc2LCJleHAiOjE2Mjc0OTg2NTYsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.vFwt2QUX-5PkvXxERAoLtIP9BltB6jNKFoOKvsNp1XI
+
+###
+
+GET http://localhost:8000/api/v1/article/like/E8C869E7-E2DC-4CFC-97D1-D2DE199346D6 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NzY4NDFGLTQxQjgtNDIyRS05NDZGLTJFREVCQjVEQTQ2RSIsInVzZXJuYW1lIjoic2ltb24xIiwiaWF0IjoxNjI3NDg4NTc2LCJleHAiOjE2Mjc0OTg2NTYsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.vFwt2QUX-5PkvXxERAoLtIP9BltB6jNKFoOKvsNp1XI
+
+###
+POST http://localhost:8000/api/v1/article/like/dislike/E8C869E7-E2DC-4CFC-97D1-D2DE199346D6 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NzY4NDFGLTQxQjgtNDIyRS05NDZGLTJFREVCQjVEQTQ2RSIsInVzZXJuYW1lIjoic2ltb24xIiwiaWF0IjoxNjI3NDg4NTc2LCJleHAiOjE2Mjc0OTg2NTYsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.vFwt2QUX-5PkvXxERAoLtIP9BltB6jNKFoOKvsNp1XI
+
+###
+POST http://localhost:8000/api/v1/article/comment/delete/A26CD7EE-541E-437C-BD36-6BF57DF96E00 HTTP/1.1
+Content-Type: application/json
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NzY4NDFGLTQxQjgtNDIyRS05NDZGLTJFREVCQjVEQTQ2RSIsInVzZXJuYW1lIjoic2ltb24xIiwiaWF0IjoxNjI3NDg4NTc2LCJleHAiOjE2Mjc0OTg2NTYsImF1ZCI6InNpbW9ud2FuZyIsImlzcyI6Imh0dHA6Ly9zaW1vbndhbmcuY2EifQ.vFwt2QUX-5PkvXxERAoLtIP9BltB6jNKFoOKvsNp1XI
+
+{
+
+}
+

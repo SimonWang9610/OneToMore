@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const { likeLogic } = require("../../logics/article");
+const { likeLogic } = require("../../logics/article/like");
 const Response = require("../../utils/response");
 
 router.get("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
-        return likeLogic.liked(req.username, articleGuid).then(row => {
+        return likeLogic.liked(req.userGuid, articleGuid).then(row => {
             if (row) {
                 return Response(res, true, "Liked");
             } else {
@@ -22,7 +22,7 @@ router.post("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
-        return likeLogic.like(req.username, articleGuid).then(row => {
+        return likeLogic.like(req.userGuid, articleGuid).then(row => {
             if (row) {
                 return Response(res, true, "Liked");
             } else {
@@ -38,7 +38,7 @@ router.post("/dislike/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
-        return likeLogic.dislike(req.username, articleGuid).then(rowsAffected => {
+        return likeLogic.dislike(req.userGuid, articleGuid).then(rowsAffected => {
             if (rowsAffected) {
                 return Response(res, true, "Disliked");
             } else {

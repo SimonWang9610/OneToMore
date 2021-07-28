@@ -1,4 +1,4 @@
-const { likeModel } = require("../../models/article");
+const { likeModel } = require("../../models/article/like");
 
 const liked = (userGuid, articleGuid) => {
     return likeModel.liked(userGuid, articleGuid);

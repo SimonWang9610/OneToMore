@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const config = require('config');
-const { articleLogic } = require('../../logics/article');
+const { articleLogic } = require('../../logics/article/article');
 const pagination = require('../../middleware/pagination');
-const Utils = require('../../utils/Utils');
 const Response = require("../../utils/response");
 
 // redirect to new page 'article-editor.html'
 router.get('/', pagination(), async (req, res, next) => {
+    // TODO: test (skip, limit) features for pagination
+
 	let skip = req.query.skip;
 	let limit = req.query.limit;
 
@@ -82,13 +83,15 @@ router.post('/edit/:id', (req, res, next) => {
 	
 });
 
-router.post('/create', (req, res, next) => {
+router.post('/create', async (req, res, next) => {
 
 	let payload = req.body;
 	let newArticle = payload.article;
 	console.log(newArticle);
 	
     if (req.token) {
+        newArticle.Author = req.username;
+        console.log(newArticle);
         return articleLogic.createArticle(newArticle).then((results) => {
             if (results.affectedRows) {
                 // fileLogic

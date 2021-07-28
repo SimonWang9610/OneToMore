@@ -1,8 +1,8 @@
-const { articleModel } = require('../../models/article');
+const { articleModel } = require('../../models/article/article');
 const Utils = require('../../utils/Utils');
 
-const getArticles = function(type, from, offset) {
-	return articleModel.getArticles(type, from, offset);
+const getArticles = function(from, offset, type) {
+	return articleModel.getArticles(from, offset, type);
 };
 
 const getSingleArticle = function(id) {

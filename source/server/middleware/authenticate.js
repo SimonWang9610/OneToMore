@@ -4,7 +4,7 @@ const Promise = require("bluebird");
 const Response = require("../utils/response");
 
 const auth = (req, res, next) => {
-    let token = req.headers["Token"];
+    let token = req.headers["token"];
 
     if (token) {
         return validateJWT(req, res, next, token);
@@ -17,7 +17,9 @@ const validateJWT = (req, res, next, token) => {
     let secretBase64 = Buffer.from(config.jwt.secret).toString("base64");
 
     return Promise.try(() => jwt.verify(token, secretBase64)).then(decoded => {
-        req.username = decoded.UserGuid;
+        console.log(decoded);
+        req.userGuid = decoded.id;
+        req.username = decoded.username;
         req.token = token;
         next();
     }).catch(err => {

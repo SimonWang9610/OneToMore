@@ -2,25 +2,25 @@ const _ = require('loadsh');
 const Strings = require('../../utils/String.js');
 const query = require('../query');
 
-const getArticles = function(type, from, offset) {
+const getArticles = function(from, offset, type) {
 	let sql = null;
 	let params = null;
 
 	if (type) {
 		sql =
-			'SELECT a.Guid, a.Title, a.Category, a.CreatedAt, ac.CommentsCount, al.LikeCount, a.ViewsCounts FROM t_article a ' +
+			'SELECT a.Guid, a.Title, a.Category, a.CreatedAt, ac.CommentsCount, al.LikeCounts, a.ViewsCounts FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
-			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
+			'LEFT JOIN (SELECT ArticleGuid, COUNT(ID) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
 			'WHERE a.Category=? ' +
 			'ORDER BY a.CreatedAt DESC LIMIT ?,?';
 		params = [ type, from, offset ];
 	} else {
 		sql =
-			'SELECT a.Guid, a.Title, a.CreatedAt, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
+			'SELECT a.Guid, a.Title, a.CreatedAt, ac.CommentsCount, al.LikesCount, a.ViewsCount FROM t_article a ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
-			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
+			'LEFT JOIN (SELECT ArticleGuid, COUNT(ID) AS LikesCount FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
 			'ORDER BY a.CreatedAt DESC LIMIT ?,?';
 		params = [ from, offset ];
 	}
@@ -40,9 +40,9 @@ const getArticles = function(type, from, offset) {
 
 const getSingleArticle = function(id) {
 	let sql =
-		'SELECT a.Guid, a.Subject, a.Content, a.Category, a.CreatedAt, a.LastModified, ac.CommentsCount, al.LikeCounts, al.Liked, a.ViewsCount FROM t_article a ' +
+		'SELECT a.Guid, a.Title, a.Content, a.Category, a.CreatedAt, a.LastModified, ac.CommentsCount, al.LikeCounts, a.ViewsCount FROM t_article a ' +
 		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ON ac.ArticleGuid = a.Guid ' +
-		'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid ' +
+		'LEFT JOIN (SELECT ArticleGuid, COUNT(ID) AS LikeCounts FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid ' +
 		'WHERE a.Guid=?';
 	return query
 		.execute({
@@ -81,7 +81,7 @@ const getLatestArticle = function() {
 const editArticle = function(article) {
 	var [ columns, params ] = createStatement(article, 'edit');
 
-	columns.push('LastEditDate=?');
+	columns.push('LastModified=?');
 	params.push(Strings.formatDate());
 
 	params.push(article.Guid);
@@ -196,12 +196,12 @@ function createStatement(article, method) {
 function createParams(article) {
 	let params = {};
 	params.Guid = article.Guid;
-	params.Subject = article.Subject;
+	params.Title = article.Title;
 	params.Content = article.Content;
-	params.IsPrivated = article.IsPrivated;
 	params.Category = article.Category;
 	params.CreatedAt = Strings.formatDate();
-
+	params.Author = article.Author;
+	params.ViewsCount = 0;
 	return params;
 }
 

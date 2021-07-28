@@ -1,4 +1,4 @@
-const userModel = require("../../models");
+const { userModel } = require("../../models/user");
 const Utils = require("../../utils/Utils");
 const config = require("config");
 const Strings = require("../../utils/String");
@@ -6,7 +6,7 @@ const Strings = require("../../utils/String");
 const validateCredentials = (username, password) => {
     return userModel.getUser(username).then(user => {
         if (user && isPasswordEqual(password, user)) {
-            delete user.password;
+            delete user.Password;
             delete user.SaltKey;
             return user;
         } else {

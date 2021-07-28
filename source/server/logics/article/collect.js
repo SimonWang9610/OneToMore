@@ -1,4 +1,4 @@
-const { collectModel } = require("../../models/article");
+const { collectModel } = require("../../models/article/collect");
 
 const getCollections = (userGuid, category) => {
     return collectModel.getCollections(userGuid, category);
@@ -9,7 +9,7 @@ const collected = (userGuid, articleGuid) => {
 }
 
 const collect = (userGuid, articleGuid, category) => {
-    return collectModel.collect(userGuid, articleGuid);
+    return collectModel.collect(userGuid, articleGuid, category);
 }
 
 const remove = (userGuid, articleGuid) => {

@@ -10,10 +10,13 @@ const config = require('config');
 // authentication
 const auth = require("./middleware/authenticate");
 
-const userRouter = require("./router/user");
-
+const loginRouter = require("./router/user/login");
+const registerRouter = require("./router/user/register");
 // routers related to article
-const articleRouter = require('./router/article');
+const articleRouter = require('./router/article/article');
+const commentRouter = require("./router/article/comment");
+const likeRouter = require("./router/article/like");
+const collectRouter = require("./router/article/collect");
 
 const { urlencoded } = require('body-parser');
 
@@ -33,8 +36,15 @@ const dist = path.resolve(__dirname, 'public');
 app.use(express.static(dist));
 
 app.use(auth);
-app.use("/api/v1/uas", userRouter);
+// handle requests of user services
+app.use("/api/v1/login", loginRouter);
+app.use("/api/v1/register", registerRouter);
+// handle requests of article services
 app.use('/api/v1/article', articleRouter);
+app.use("/api/v1/article/comment", commentRouter);
+app.use("/api/v1/article/like", likeRouter);
+app.use("/api/v1/article/collect", collectRouter);
+
 
 
 app.get('/api/v1', (req, res, next) => {

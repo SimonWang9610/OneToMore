@@ -4,7 +4,7 @@ const Strings = require('../../utils/String');
 
 
 const liked = (userGuid, articleGuid) => {
-    let sql = "SELECT COUNT(ID) FROM t_like WHERE ArticleGuid=?, UserGuid=?";
+    let sql = "SELECT COUNT(ID) AS Count FROM t_like WHERE ArticleGuid=? AND UserGuid=?";
     return query.execute({
         statement: sql,
         params: [articleGuid, userGuid]
@@ -12,7 +12,7 @@ const liked = (userGuid, articleGuid) => {
         if (_.isEmpty(rs)) {
             return false;
         } else {
-            return true;
+            return rs[0].Count;
         }
     })
 }
@@ -35,7 +35,7 @@ const like = (userGuid, articleGuid) => {
 }
 
 const dislike = (userGuid, articleGuid) => {
-    let sql = "DELETE FROM t_like WHERE ArticleGuid=?, UserGuid=?";
+    let sql = "DELETE FROM t_like WHERE ArticleGuid=? AND UserGuid=?";
 
     return query.execute({
         statement: sql,
@@ -50,7 +50,7 @@ const dislike = (userGuid, articleGuid) => {
 }
 
 const getLikes = (articleGuid) => {
-    let sql = "SELECT UserGuid FROM t_like WHERE ArticleGuid=?";
+    let sql = "SELECT COUNT(UserGuid) AS Likes FROM t_like WHERE ArticleGuid=?";
     
     return query.execute({
         statement: sql,
@@ -59,7 +59,7 @@ const getLikes = (articleGuid) => {
         if (_.isEmpty(rs)) {
             return [];
         } else {
-            return rs;
+            return rs[0].Likes;
         }
     })
 }

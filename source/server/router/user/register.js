@@ -1,9 +1,6 @@
 const router = require("express").Router();
-const userLogic = require("../../logics/user");
-const Strings = require("../../utils/String");
+const { userLogic } = require("../../logics/user");
 const Response = require("../../utils/response");
-const config = require("config");
-const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res, next) => {
 
@@ -44,12 +41,12 @@ router.get("/verify", async (req, res, next) => {
     try {
         if (email) {
             let emailExist = await userLogic.emailExist(email);
-            return Response(res, emailExist, null);
+            return Response(res, true, emailExist);
         }
     
         if (username) {
             let nameExist = await userLogic.nameExist(username);
-            return Response(res, nameExist, null);
+            return Response(res, true, nameExist);
         }
     } catch (err) {
         console.error(err);

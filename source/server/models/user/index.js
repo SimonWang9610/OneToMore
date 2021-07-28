@@ -62,7 +62,7 @@ const nameExist = (username) => {
 }
 
 const updateLastLogin = (userGuid, date) => {
-    let sql = "UPDATE t_suer SET LastLogin=? WHERE Guid=?";
+    let sql = "UPDATE t_user SET LastLogin=? WHERE Guid=?";
     return query.execute({
         statement: sql,
         params: [date, userGuid],
@@ -85,10 +85,11 @@ function createParams(user) {
 
     params.Guid = user.Guid;
     params.Username = user.Username;
+    params.Email = user.Email;
     params.SaltKey = user.SaltKey;
     params.Password = user.Password;
     params.LastLogin = Strings.formatDate();
-    params.IsActivated = true;
+    //params.IsActivated = true;
 
     return params;
 }

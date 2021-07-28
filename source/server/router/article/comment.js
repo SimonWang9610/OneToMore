@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { commentLogic } = require("../../logics/article");
+const { commentLogic } = require("../../logics/article/comment");
 const Response = require("../../utils/response");
 
 router.get("/:articleGuid/", async (req, res, next) => {
@@ -19,20 +19,21 @@ router.get("/:articleGuid/", async (req, res, next) => {
     }).catch(err => console.error(err))
 });
 
-router.get("/:articleGuid/:commentGuid", async (res, res, next) => {
+router.get("/:articleGuid/:commentGuid", async (req, res, next) => {
     // TODO: implement reply comments
     return Response(res, false, "WaitingImplementation");
 });
 
 
 router.post("/create", async (req, res, next) => {
-    let comment = req.payload.comment;
+    let comment = req.body.comment;
+    // comment {content, author, articleGuid}
     
     if (req.token) {
         try {
-            let { rowsAffected, id } = await commentLogic.addComment(comment);
-    
-            if (rowsAffected) {
+            let { affectedRows, id } = await commentLogic.addComment(comment, req.userGuid);
+
+            if (affectedRows) {
                 let comment = await commentLogic.getComment(id);
                 return Response(res, true, comment);
             } else {

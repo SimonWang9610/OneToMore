@@ -3,7 +3,7 @@ const Strings = require('../../utils/String');
 const query = require('../../models/query');
 
 const getComments = function(articleGuid) {
-	let sql = 'SELECT c.Guid, c.Content, c.CreationAt, c.Author FROM t_comment c '
+	let sql = 'SELECT c.Guid, c.Content, c.CreationDate, c.Author FROM t_comment c '
 			+ 'WHERE c.ArticleGuid=? ORDER BY c.CreationDate';
 	return query.execute({
 		statement: sql,
@@ -18,8 +18,8 @@ const getComments = function(articleGuid) {
 };
 
 const getComment = (commentGuid) => {
-	let sql = 'SELECT c.Guid, c.Content, c.CreatedAt, c.Author FROM t_comment c '
-		+ 'WHERE c.Guid=?';
+	let sql = 'SELECT c.Guid, c.Content, c.CreationDate, c.Author, u.Username 		FROM t_comment c ' +
+		'LEFT JOIN (SELECT Username, Guid FROM t_user GROUP BY Username) AS u ON u.Guid = c.Author WHERE c.Guid=?';
 	
 	return query.execute({
 			statement: sql,
@@ -36,7 +36,7 @@ const getComment = (commentGuid) => {
 
 const addComment = function(comment) {
 	var [columns, params] = createStatement(comment);
-	columns.push('CreatedAt=?');
+	columns.push('CreationDate=?');
 	params.push(Strings.formatDate());
 
 	let sql = 'INSERT INTO t_comment SET ' + columns.join();
@@ -58,7 +58,7 @@ const addComment = function(comment) {
 
 const deleteComment = function(commentGuid) {
 	let sql = 'DELETE FROM t_comment WHERE Guid=?';
-	return qury.execute({
+	return query.execute({
 		statement: sql,
 		params: [commentGuid]
 	}).then(rs => {
