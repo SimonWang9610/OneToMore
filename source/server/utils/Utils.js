@@ -33,16 +33,6 @@ var utils = {
 	uuid: function() {
 		return uuid().toUpperCase();
 	},
-
-	getLang: function(req) {
-		let lang = req.query.lang;
-		if (lang) {
-			return lang;
-		} else {
-			return 'en';
-		}
-	},
-
 	getExtName: function(filename) {
 		let pos = filename.lastIndexOf('.');
 		if (pos !== -1) {

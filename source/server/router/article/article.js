@@ -3,6 +3,7 @@ const config = require('config');
 const { articleLogic } = require('../../logics/article/article');
 const pagination = require('../../middleware/pagination');
 const Response = require("../../utils/response");
+const fileLogic = require("../../logics/file-logic");
 
 // redirect to new page 'article-editor.html'
 router.get('/', pagination(), async (req, res, next) => {
@@ -71,7 +72,7 @@ router.post('/edit/:id', (req, res, next) => {
 				// 	console.log(' insert images affectedRows', affectedRows);
 				// 	return Utils.resp(res, true, 'ArticleEdited');
 				// });
-				res.redirect(`/api/v1/article/${articleGuid}`);
+				// res.redirect(`/api/v1/article/${articleGuid}`);
 			} else {
                 return Response(res, false, "EditFailure");
 			}

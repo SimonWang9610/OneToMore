@@ -14,3 +14,5 @@ Cargo.lock
 /upload/
 **/node_modules/
 **/config/
+**/uploads
+**/tmp
