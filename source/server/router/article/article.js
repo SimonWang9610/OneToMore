@@ -5,14 +5,18 @@ const pagination = require('../../middleware/pagination');
 const Response = require("../../utils/response");
 const fileLogic = require("../../logics/file-logic");
 
-// redirect to new page 'article-editor.html'
+
+/*
+@return {Guid, Title, Author, LastModified, Category, ViewsCount, LikesCount, CommentsCount, CollectsCount}
+*/
 router.get('/', pagination(), async (req, res, next) => {
-    // TODO: test (skip, limit) features for pagination
 
 	let skip = req.query.skip;
 	let limit = req.query.limit;
 
-	try {
+    try {
+        // get the [limit] articles starting from [skip]
+        // TODO: test (skip, limit) features for pagination
 		let articles = await articleLogic.getArticles(skip, limit);
 		
 		return res.status(200).json({
@@ -27,11 +31,14 @@ router.get('/', pagination(), async (req, res, next) => {
 	}
 });
 
+/*
+@return {Guid, Title, Content, Author, CreatedAt, LastModified, Category, ViewsCount, LikesCount, CommentsCount, CollectsCount}
+*/
 router.get('/:id', async (req, res, next) => {
 	
 	let articleGuid = req.params.id;
 	
-	try {
+    try {
 		let article = await articleLogic.getSingleArticle(articleGuid);
 
 		console.log(article);

@@ -21,6 +21,8 @@ const updateLastLogin = (userGuid) => {
 }
 
 const createUser = async (user) => {
+    // generate SaltKey for hashing the user password
+    // and then compare the hashedPassword saved in the database
     let passwordSalt = Utils.createSaltKey(config.password.saltKeyLength);
     let hashedPassword = Utils.createHashPassword(user.password, passwordSalt, config.password.hashAlgorithm);
 
@@ -29,9 +31,11 @@ const createUser = async (user) => {
     user.SaltKey = passwordSalt;
 
     try {
+        // store the user information in the database
         let affectedRows = await userModel.createUser(user);
 
         if (affectedRows) {
+            // remove secret fields to avoid exposing important information
             delete user.Password;
             delete user.SaltKey;
             return user.Guid;

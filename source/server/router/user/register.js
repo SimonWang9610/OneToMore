@@ -22,6 +22,7 @@ router.post("/", async (req, res, next) => {
             Password: password,
         };
 
+        // generate required fields, and then store it into database
         let userId = await userLogic.createUser(user);
 
         if (userId) {
@@ -35,6 +36,7 @@ router.post("/", async (req, res, next) => {
 });
 
 router.get("/verify", async (req, res, next) => {
+    // to verify if email or name exists in the system
     let email = req.query.email;
     let username = req.query.username;
 
