@@ -57,13 +57,13 @@ router.post("/:articleGuid", async (req, res, next) => {
     }
 });
 
-router.post("/remove/:articleGuid", async (req, res, next) => {
+router.delete("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
         return collectLogic.remove(req.username, articleGuid).then(rowsAffected => {
             if (rowsAffected) {
-                return Response(res, true, "Uncollected");
+                return Response(res, false, "Uncollected");
             } else {
                 return Response(res, false, "NeverCollected");
             }

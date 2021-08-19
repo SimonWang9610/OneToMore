@@ -19,13 +19,14 @@ router.get('/', pagination(), async (req, res, next) => {
         // TODO: test (skip, limit) features for pagination
 		let articles = await articleLogic.getArticles(skip, limit);
 		
-		return res.status(200).json({
-			data: {
-                success: true,
-				articles: articles
-			},
-			error: null,
-		});
+        if (articles) {
+            return res.status(200).json({
+                Success: true,
+                Articles: articles
+            });
+        } else {
+            return Response(res, false, NoArticle);
+        }
 	} catch (err) {
         console.error(err);
 	}
@@ -45,11 +46,8 @@ router.get('/:id', async (req, res, next) => {
 
 		if (article) {
 			return res.status(200).json({
-				data: {
-					success: true,
-					article: article,
-				},
-				error: null,
+                Success: true,
+                Article: article,
 			});
 		} else {
             return Response(res, false, "ArticleNotExist");

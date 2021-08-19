@@ -8,7 +8,7 @@ const getCollections = (userGuid, category) => {
         "LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) as CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ON ac.ArticleGuid = a.Guid " +
         "LEFT JOIN t_collection tc ON a.Guid = tc.ArticleGuid " +
         "LEFT JOIN (SELECT ArticleGuid, UserGuid, COUNT(ID) as Liked FROM t_like GROUP BY UserGuid) AS al ON al.UserGuid = tc.Guid AND al.ArticleGuid = tc.ArticleGuid WHERE tc.Guid=?";
-    
+
     let params = [userGuid];
 
     if (category) {
@@ -64,7 +64,7 @@ const collect = (userGuid, articleGuid, category) => {
 }
 
 const remove = (userGuid, articleGuid) => {
-    let sql = "DELETE FROM t_collection WHERE Guid=?, ArticleGuid=?";
+    let sql = "DELETE FROM t_collection WHERE Guid=? AND ArticleGuid=?";
 
     return query.execute({
         statement: sql,

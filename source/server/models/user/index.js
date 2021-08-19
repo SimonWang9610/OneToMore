@@ -2,12 +2,12 @@ const query = require("../query");
 const _ = require("loadsh");
 const Strings = require("../../utils/String");
 
-const getUser = (username) => {
-    let sql = "SELECT Guid, Username, SaltKey, Password FROM t_user WHERE Username=?";
+const getUser = (email) => {
+    let sql = "SELECT Guid, Username, Email, SaltKey, Password FROM t_user WHERE Email=?";
 
     return query.execute({
         statement: sql,
-        params: [username],
+        params: [email],
     }).then(rs => {
         if (_.isEmpty(rs)) {
             return null;

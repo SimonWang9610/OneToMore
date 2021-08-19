@@ -34,13 +34,13 @@ router.post("/:articleGuid", async (req, res, next) => {
     }
 });
 
-router.post("/dislike/:articleGuid", async (req, res, next) => {
+router.delete("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     if (req.token) {
         return likeLogic.dislike(req.userGuid, articleGuid).then(rowsAffected => {
             if (rowsAffected) {
-                return Response(res, true, "Disliked");
+                return Response(res, false, "Disliked");
             } else {
                 return Response(res, false, "NeverLiked");
             }

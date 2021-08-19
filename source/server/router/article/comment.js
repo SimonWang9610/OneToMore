@@ -2,22 +2,35 @@ const router = require("express").Router();
 const { commentLogic } = require("../../logics/article/comment");
 const Response = require("../../utils/response");
 
-router.get("/:articleGuid/", async (req, res, next) => {
+router.get("/:articleGuid", async (req, res, next) => {
     let articleGuid = req.params.articleGuid;
 
     return commentLogic.getComments(articleGuid).then(comments => {
         if (comments) {
             return res.status(200).json({
-                data: {
-                    success: true,
-                    comments: comments
-                }
+                Success: true,
+                Comments: comments
             })
         } else {
             return Response(res, false, "NoComments");
         }
     }).catch(err => console.error(err))
 });
+
+router.get("/count/:articleGuid", async (req, res, next) => {
+    let articleGuid = req.params.articleGuid;
+
+    return commentLogic.count(articleGuid).then(count => {
+        if (count) {
+            return res.status(200).json({
+                Success: true,
+                Count: count,
+            });
+        } else {
+            return Response(res, false, "NoComments");
+        }
+    }).catch(err => console.error(err));
+})
 
 router.get("/:articleGuid/:commentGuid", async (req, res, next) => {
     // TODO: implement reply comments
@@ -28,7 +41,7 @@ router.get("/:articleGuid/:commentGuid", async (req, res, next) => {
 router.post("/create", async (req, res, next) => {
     let comment = req.body.comment;
     // comment {content, author, articleGuid}
-    
+
     if (req.token) {
         try {
             let { affectedRows, id } = await commentLogic.addComment(comment, req.userGuid);
@@ -47,11 +60,11 @@ router.post("/create", async (req, res, next) => {
     }
 });
 
-router.post("/delete/:commentGuid", async (req, res, next) => {
+router.delete("/:commentGuid", async (req, res, next) => {
     let commentGuid = req.params.commentGuid;
 
     if (req.token) {
-        return commentLogic.deleteComment(commentGuid).then(rowsAffected => {
+        return commentLogic.deleteComment(commentGuid, req.userGuid).then(rowsAffected => {
             if (rowsAffected) {
                 return Response(res, true, null);
             } else {

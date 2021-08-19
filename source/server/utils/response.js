@@ -1,10 +1,8 @@
 
 const Response = (res, success, message) => {
     return res.json({
-        data: {
-            success: success,
-            message: message,
-        },
+        Success: success,
+        Message: message,
     })
 }
 

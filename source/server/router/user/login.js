@@ -5,14 +5,13 @@ const Response = require("../../utils/response");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 
-router.get("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
     
     // read data from the client-side
     let payload = req.body;
-    let email = payload.email;
-    let username = payload.username;
-    let password = payload.password;
-
+    let email = payload.Email;
+    let username = payload.Username;
+    let password = payload.Password;
 
     // ensure non-nullable fields
     if (Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(password)) {
@@ -21,7 +20,7 @@ router.get("/", async (req, res, next) => {
 
     try {
         // validate credentials in the database
-        let user = await userLogic.validateCredentials(username, password);
+        let user = await userLogic.validateCredentials(email, password);
 
         if (user) {
             // update the last login date
@@ -35,13 +34,10 @@ router.get("/", async (req, res, next) => {
 
             // return the public information of the current user: {userGuid, username}
             return res.status(200).json({
-                data: {
-                    success: true,
-                    message: "LoginSuccess",
-                    Token: token,
-                    user: user,
-                },
-                error: null,
+                Success: true,
+                Message: "LoginSuccess",
+                Token: token,
+                User: user,
             })
         } else {
             return Response(res, false, "UserNotExist");

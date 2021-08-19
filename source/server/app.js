@@ -6,6 +6,7 @@ const dot = require('dot');
 const cors = require('cors');
 const path = require('path');
 const config = require('config');
+const Files = require("./utils/Files");
 
 // authentication
 const auth = require("./middleware/authenticate");
@@ -33,7 +34,10 @@ app.use(bodyParser.text());
 
 // path to static files
 const dist = path.resolve(__dirname, 'public');
+const reactPath = path.join(__dirname, "../client/one/build");
+
 app.use(express.static(dist));
+app.use(express.static(reactPath));
 
 app.use(auth);
 // handle requests of user services
@@ -47,10 +51,18 @@ app.use("/api/v1/article/collect", collectRouter);
 
 
 
-app.get('/api/v1', (req, res, next) => {
-    return res.status(200).json({
-        message: "response from the server"
-    });
+app.get("/", async (req, res, next) => {
+
+    try {
+        let indexPath = "../client/one/build/index.html";
+
+        let data = await Files.readFile(indexPath);
+        let html = data.toString();
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(html);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 const PORT = config.http.port;

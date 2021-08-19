@@ -5,11 +5,12 @@ const Response = require("../../utils/response");
 router.post("/", async (req, res, next) => {
 
     // TODO email verification
+    console.log("get register request");
 
     let payload = req.body;
-    let email = payload.email;
-    let username = payload.username;
-    let password = payload.password;
+    let email = payload.Email;
+    let username = payload.Username;
+    let password = payload.Password;
 
     if (!email || !username || !password) {
         return Response(res, false, "BadRequest");
@@ -22,6 +23,7 @@ router.post("/", async (req, res, next) => {
             Password: password,
         };
 
+        console.log("user: " + JSON.stringify(user));
         // generate required fields, and then store it into database
         let userId = await userLogic.createUser(user);
 
@@ -37,8 +39,8 @@ router.post("/", async (req, res, next) => {
 
 router.get("/verify", async (req, res, next) => {
     // to verify if email or name exists in the system
-    let email = req.query.email;
-    let username = req.query.username;
+    let email = req.body.Email;
+    let username = req.body.Username;
 
     try {
         if (email) {
