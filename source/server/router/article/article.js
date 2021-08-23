@@ -11,14 +11,13 @@ const fileLogic = require("../../logics/file-logic");
 */
 router.get('/', pagination(), async (req, res, next) => {
 
-	let skip = req.query.skip;
-	let limit = req.query.limit;
+	// let skip = req.query.skip;
+	// let limit = req.query.limit;
 
     try {
         // get the [limit] articles starting from [skip]
         // TODO: test (skip, limit) features for pagination
-		let articles = await articleLogic.getArticles(skip, limit);
-		
+		let articles = await articleLogic.getArticles();
         if (articles) {
             return res.status(200).json({
                 Success: true,
@@ -91,8 +90,7 @@ router.post('/edit/:id', (req, res, next) => {
 
 router.post('/create', async (req, res, next) => {
 
-	let payload = req.body;
-	let newArticle = payload.article;
+    let newArticle = req.body;
 	console.log(newArticle);
 	
     if (req.token) {
@@ -109,10 +107,8 @@ router.post('/create', async (req, res, next) => {
                 // 		console.log(err);
                 // 	});
                 return res.status(200).json({
-                    data: {
-                        success: true,
-                    },
-                    error: null,
+                    Success: true,
+                    Message: "Published"
                 });
             } else {
                 return Response(res, false, "CreationFailure");

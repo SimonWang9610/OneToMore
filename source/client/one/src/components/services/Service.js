@@ -50,15 +50,20 @@ class ServiceProvider {
             headers: this.createHeaders(),
             responseType: "json",
         }
-
-        const res = await axios(req);
-
-        if (res.data) {
-            console.log(res.data);
-            return res.data;
-        } else {
-            throw new Error(res.message);
+        console.log("getting data...");
+        
+        try {
+            const res = await axios(req);
+            if (res.data) {
+                console.log(res.data);
+                return res.data;
+            } else {
+                throw new Error(res.message);
+            }
+        } catch (err) {
+            console.error(err);
         }
+
     }
 
     postData(url, payload) {

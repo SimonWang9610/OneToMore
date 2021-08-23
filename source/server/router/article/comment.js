@@ -39,7 +39,8 @@ router.get("/:articleGuid/:commentGuid", async (req, res, next) => {
 
 
 router.post("/create", async (req, res, next) => {
-    let comment = req.body.comment;
+    let comment = req.body;
+    console.log("comment: " + JSON.stringify(comment));
     // comment {content, author, articleGuid}
 
     if (req.token) {

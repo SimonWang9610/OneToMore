@@ -18,7 +18,7 @@ const FootPage = () => {
                         </div>
                     </MDBCol>
                     <MDBCol md="4">
-                        <div className="footer-copyright text-center py-3">AjaxWeaver &copy; 2021</div>
+                        <div className="footer-copyright text-center py-3">Community &copy; 2021</div>
                     </MDBCol>
                     <MDBCol md="4" >
                         <div className="text-center py-3">

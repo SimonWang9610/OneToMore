@@ -10,10 +10,8 @@ router.get("/", async (req, res, next) => {
         let articles = await collectLogic.getCollections(req.userGuid, category);
         if (articles) {
             return res.status(200).json({
-                data: {
-                    success: true,
-                    articles: articles,
-                }
+                Success: true,
+                Articles: articles,
             })
         } else {
             return Response(res, false, "NoCollections");

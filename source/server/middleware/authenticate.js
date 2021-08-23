@@ -25,18 +25,13 @@ const validateJWT = (req, res, next, token) => {
     }).catch(err => {
         if (err instanceof jwt.TokenExpiredError) {
             return res.status(408).json({
-                data: {
-                    success: false,
-                    message: "SessionExpired"
-                },
-                error: null,
+                Success: false,
+                Message: "SessionExpired"
             })
         } else {
             return res.status(401).json({
-                data: {
-                    success: false,
-                    message: "InvalidCredential"
-                }
+                Success: false,
+                Message: "InvalidCredential"
             })
         }
     })

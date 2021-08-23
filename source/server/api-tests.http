@@ -51,7 +51,7 @@ Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkI3NDREMkUyLTM0ODItNDU4MC04
 
 ###
 
-GET http://localhost:8000/api/v1/article/E8C869E7-E2DC-4CFC-97D1-D2DE199346D6 HTTP/1.1
+GET http://localhost:8000/api/v1/article/ HTTP/1.1
 Content-Type: application/json
 
 ###

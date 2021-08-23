@@ -10,6 +10,7 @@ import LoginForm from "./forms/login";
 import RegisterForm from "./forms/register";
 import MainPage from './main-page';
 import Single from './single';
+import Editor from './editor/editor';
 const HomeView = (props) => {
 
     let history = useHistory();
@@ -28,6 +29,9 @@ const HomeView = (props) => {
                 </Route>
                 <Route path="/article/:articleGuid">
                     <Single isAuth={props.isAuth} content={props.content} />
+                </Route>
+                <Route path="/new">
+                    <Editor content={props.content} storage={ props.storage}/>
                 </Route>
             </Switch>
         </MDBView>

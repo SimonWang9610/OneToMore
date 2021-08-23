@@ -33,6 +33,8 @@ const LoginForm = (props) => {
     const login = async (e) => {
         e.preventDefault();
 
+        props.storage.clear();
+
         if (email && password) {
             let payload = {
                 Email: emailInput.current.value,
@@ -50,7 +52,7 @@ const LoginForm = (props) => {
 
                     console.log("setAuth");
                     props.setAuth(true);
-                    console.log("redirecting...");
+
                     history.push("/");
                 } else {
                     setMessage(data.Message);
@@ -78,7 +80,7 @@ const LoginForm = (props) => {
                     <MDBCard style={{ width: "30em" }}>
                         <MDBCardBody>
                             <form id="login-form" onSubmit={login}>
-                                <p className="h4 text-center mb-4">Signin</p>
+                                <p className="h4 text-center mb-4">Sign in</p>
                                 <div className="text-danger">{message}</div>
                                 <label htmlFor="email" className="grey-text">
                                     Email

@@ -5,46 +5,47 @@ ajax requests of articles
 class ArticleServiceProvider {
     constructor(service) {
         this.service = service;
-        this.prefix = "/api/v1/article";
+        this.prefix = "/api/v1";
     }
 
     create(payload) {
-        const api = this.prefix + "/create";
+        const api = this.prefix + "/article/create";
         return this.service.postData(api, payload);
     }
 
     edit(id, payload) {
-        const api = this.prefix + "/edit/" + id;
+        const api = this.prefix + "/article/edit/" + id;
         return this.service.postData(api, payload);
     }
 
     view(id) {
-        const api = this.prefix + "/view/" + id;
+        const api = this.prefix + "/article/view/" + id;
         return this.service.postData(api);
     }
 
     delete(id) {
-        const api = this.prefix + "/" + id;
+        const api = this.prefix + "/article/" + id;
         return this.service.deleteData(api);
     }
 
     single(id) {
-        const api = this.prefix + "/" + id;
+        const api = this.prefix + "/article/" + id;
         return this.service.getData(api);
     }
 
     all(skip, limit) {
-        let api = this.prefix + "/";
+        let api = this.prefix + "/article/";
 
         if (skip && limit) {
             let condition = `?skip=${skip}&limit=${limit}`;
             api.concat(condition);
         }
+        console.log("sending all() request");
         return this.service.getData(api);
     }
 
     getComments(articleGuid, commentGuid) {
-        let api = this.prefix + "/commet/" + articleGuid;
+        let api = this.prefix + "/comment/" + articleGuid;
 
         if (commentGuid) {
             api.concat("/" + commentGuid);
@@ -104,3 +105,5 @@ class ArticleServiceProvider {
     }
 
 }
+
+export default ArticleServiceProvider;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
@@ -20,12 +20,16 @@ function App() {
 
   const [isAuthenticated, setAuthenticated] = useState(false);
 
+  useEffect(() => {
+    storage.clear();
+  }, []);
+
   return (
     <div className="App">
       <Router>
         <NavbarPage isAuth={isAuthenticated} auth={uas} storage={storage} setAuth={setAuthenticated} />
         <div>
-          <HomeView storage={storage} auth={uas} setAuth={setAuthenticated} content={ articleService}/>
+          <HomeView storage={storage} auth={uas} setAuth={setAuthenticated} content={articleService} isAuth={isAuthenticated}/>
         </div>
         <FootPage />
       </Router>

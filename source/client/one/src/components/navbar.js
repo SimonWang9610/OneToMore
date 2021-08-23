@@ -77,6 +77,11 @@ const NavbarPage = (props) => {
                                 <MDBNavItem>
                                     <MDBNavLink to="/trend" className="text-dark">Trend<MDBIcon fab icon="gripfire" /></MDBNavLink>
                                 </MDBNavItem>
+                                <MDBNavItem>
+                                    <MDBNavLink to="/new" icon="edit" className="text-dark" exact>
+                                        Create
+                                    </MDBNavLink>
+                                </MDBNavItem>
                             </MDBNavbarNav>
                         )
                 }

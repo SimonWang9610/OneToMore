@@ -21,8 +21,8 @@ const getArticles = function(from, offset, type) {
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(Guid) AS CommentsCount FROM t_comment GROUP BY ArticleGuid) AS ac ' +
 			'ON ac.ArticleGuid = a.Guid ' +
 			'LEFT JOIN (SELECT ArticleGuid, COUNT(ID) AS LikesCount FROM t_like GROUP BY ArticleGuid) AS al ON al.ArticleGuid = a.Guid '
-			'ORDER BY a.CreatedAt DESC LIMIT ?,?';
-		params = [ from, offset ];
+			'ORDER BY a.CreatedAt';
+		// params = [ from, offset ];
 	}
 	return query
 		.execute({

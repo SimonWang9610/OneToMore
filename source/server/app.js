@@ -44,10 +44,10 @@ app.use(auth);
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/register", registerRouter);
 // handle requests of article services
+app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/like", likeRouter);
+app.use("/api/v1/collect", collectRouter);
 app.use('/api/v1/article', articleRouter);
-app.use("/api/v1/article/comment", commentRouter);
-app.use("/api/v1/article/like", likeRouter);
-app.use("/api/v1/article/collect", collectRouter);
 
 
 

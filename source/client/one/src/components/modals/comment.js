@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
     MDBContainer,
     MDBBtn,
@@ -11,6 +12,7 @@ import {
 } from "mdbreact";
 
 const CommentForm = (props) => {
+    let history = useHistory();
     const [modal, setModal] = useState(false);
     const [comment, setComment] = useState("");
     const [count, setCount] = useState(props.commentsCount);
@@ -27,26 +29,35 @@ const CommentForm = (props) => {
                 ArticleGuid: props.articleGuid,
             }
 
-            let res = await props.content.comment(payload);
+            if (props.isAuth) {
+                let res = await props.content.comment(payload);
 
-            if (res.Success) {
-                let query = await props.content.countComments(props.articleGuid);
+                if (res.Success) {
+                    let query = await props.content.countComments(props.articleGuid);
+    
+                    if (query.Success) {
+                        setCount(query.Count);
+                    } else {
+                        //TODO prompt res Message
+                    }
 
-                if (query.Success) {
-                    setCount(query.Count);
+                    setModal(!modal);
                 } else {
                     //TODO prompt res Message
                 }
             } else {
-                //TODO prompt res Message
+                alert("Pleaser login first!");
+                history.push("/login");
             }
         }
     }
 
+    useEffect(() => { }, [props.isAuth]);
+
     return (
         <MDBContainer>
             <MDBBtn onClick={toggle}>
-                <MDBIcon icon="comment">{count}</MDBIcon>
+                <MDBIcon icon="comment-dots"/>{count? count: 0}
             </MDBBtn>
             <MDBModal isOpen={modal} toggle={toggle}>
                 <MDBModalBody>

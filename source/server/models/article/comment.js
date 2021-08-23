@@ -71,7 +71,7 @@ const deleteComment = function (commentGuid, userGuid) {
 };
 
 const count = (articleGuid) => {
-	let sql = "SELECT COUNT(id) AS Count WHERE ArticleGuid=?";
+	let sql = "SELECT COUNT(ID) AS Count FROM t_comment WHERE ArticleGuid=?";
 	return query.execute({
 		statement: sql,
 		params: [articleGuid]

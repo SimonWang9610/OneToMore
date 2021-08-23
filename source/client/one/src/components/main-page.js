@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
     MDBCol,
     MDBRow,
@@ -11,37 +11,41 @@ import ArticleCard from './article';
 
 
 const MainPage = (props) => {
+    let history = useHistory();
 
     const [articles, setArticles] = useState(null);
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("Loading Articles");
 
     useEffect(() => {
         async function getArticles() {
-            let res = await props.content.all();
 
-            if (res.Success) {
-                setArticles(res.Articles);
+            let data = await props.content.all();
+
+            if (data.Success) {
+                setArticles(data.Articles);
+            } else if (data.Message === "SessionExpired" || data.Message === "InvalidCredential") {
+                history.push("/login");
             } else {
-                setMessage(res.Message);
+                console.log(data.Message);
             }
         }
         getArticles();
-    });
+    }, []);
 
     return (
-        <MDBContainer>
+        <div>
             {
-                message ?
-                    <p>{message}</p> :
-                    articles.map(article => {
-                    return (
-                        <MDBRow>
-                            <ArticleCard article={article} />
-                        </MDBRow>
-                    )
-                })
+                articles ? <MDBContainer>
+                    {articles.map(article => {
+                        return (
+                            <div className="d-flex justify-content-center m-4">
+                                <ArticleCard article={article} content={props.content} />
+                            </div>
+                        )
+                    })}
+                </MDBContainer>: <p>{message}</p>
             }
-        </MDBContainer>
+        </div>
     )
 }
 
